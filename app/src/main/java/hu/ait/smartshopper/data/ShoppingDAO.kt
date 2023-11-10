@@ -16,8 +16,8 @@ interface ShoppingDAO {
     @Query("SELECT * from shoppingtable WHERE id = :id")
     fun getShoppingItem(id: Int): Flow<ShoppingItem>
 
-    @Query("SELECT COUNT(*) from shoppingtable")
-    suspend fun getShoppingItemsNum(): Int
+//    @Query("SELECT COUNT(*) from shoppingtable")
+//    suspend fun getShoppingItemsNum(): Int
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(todo: ShoppingItem)
