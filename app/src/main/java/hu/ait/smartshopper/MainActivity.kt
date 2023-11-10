@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import hu.ait.smartshopper.screen.ShoppingListScreen
+import hu.ait.smartshopper.screen.ShoppingListViewModel
 import hu.ait.smartshopper.ui.theme.SmartShopperTheme
 
 @AndroidEntryPoint

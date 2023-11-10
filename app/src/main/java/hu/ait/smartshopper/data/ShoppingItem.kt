@@ -11,7 +11,7 @@ data class ShoppingItem(
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "category") var category: ItemCategory,
     @ColumnInfo(name = "description") var description: String,
-    @ColumnInfo(name = "estimatedprice") var estimatedprice: Int,
+    @ColumnInfo(name = "estimatedprice") var estimatedPrice: Int,
     @ColumnInfo(name = "status") var status: Boolean
 )
 
