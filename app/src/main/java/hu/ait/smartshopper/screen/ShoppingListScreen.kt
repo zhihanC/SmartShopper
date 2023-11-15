@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
@@ -50,10 +51,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import hu.ait.smartshopper.data.ItemCategory
 import hu.ait.smartshopper.data.ShoppingItem
 import java.util.Date
 
@@ -143,8 +146,20 @@ private fun AddNewShoppingItemForm(
             mutableStateOf(shoppingItemToEdit?.title?: "")
         }
 
-        var shoppingItemTest by rememberSaveable {
-            mutableStateOf(shoppingItemToEdit?.title?: "")
+        var shoppingItemCategory by rememberSaveable {
+            mutableStateOf(shoppingItemToEdit?.category)
+        }
+
+        var shoppingItemDescription by rememberSaveable {
+            mutableStateOf(shoppingItemToEdit?.description?: "")
+        }
+
+        var shoppingItemEstimatedPrice by rememberSaveable {
+            mutableStateOf(shoppingItemToEdit?.estimatedPrice?: 0)
+        }
+
+        var shoppingItemStatus by rememberSaveable {
+            mutableStateOf(shoppingItemToEdit?.status?: false)
         }
 
         Column(
@@ -165,14 +180,38 @@ private fun AddNewShoppingItemForm(
                 label = { Text(text = "Enter item here:") }
             )
 
+            // ItemCategory Spinner needs to be added here
+
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = shoppingItemTest,
+                value = shoppingItemDescription,
                 onValueChange = {
-                    shoppingItemTest = it
+                    shoppingItemDescription = it
                 },
-                label = { Text(text = "Enter test here:") }
+                label = { Text(text = "Enter description here:") }
             )
+
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = shoppingItemEstimatedPrice.toString(),
+                onValueChange = {
+                    shoppingItemEstimatedPrice = it.toIntOrNull() ?: 0
+                },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                ),
+                label = { Text(text = "Enter estimated price here:") }
+            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(checked = shoppingItemStatus, onCheckedChange = {
+                    shoppingItemStatus = it
+                })
+                Text(text = "Got it!")
+            }
+
             // This is where the to-do app had the Important click box.
 //            Row(
 //                verticalAlignment = Alignment.CenterVertically
@@ -186,27 +225,29 @@ private fun AddNewShoppingItemForm(
                 Button(
                     onClick = {
                         // This is where the Shopping Item is actually created.
-//                    if (shoppingItemToEdit == null) {
-//                        shoppingListViewModel.addToShoppingList(
-//                            ShoppingItem(
-//                                0,
-//                                shoppingItemTitle,
-//                                "MISC",
-//                                Date(System.currentTimeMillis()).toString(),
-//                                if (todoImportant) TodoPriority.HIGH else TodoPriority.NORMAL,
-//                                false
-//                            )
-//                        )
-//                    } else {
-//                        var todoEdited = todoToEdit.copy(
-//                            title = todoTitle,
-//                            priority = if (todoImportant)
-//                                TodoPriority.HIGH else TodoPriority.NORMAL,
-//                        )
-//                        todoViewModel.editTodoItem(todoEdited)
-//                    }
-//
-//                    onDialogDismiss()
+                        // Currently the spinner is not implemented and I am hardcoding the item category as food everytime
+                    if (shoppingItemToEdit == null) {
+                        shoppingListViewModel.addToShoppingList(
+                            ShoppingItem(
+                                0,
+                                shoppingItemTitle,
+                                ItemCategory.FOOD,
+                                shoppingItemDescription,
+                                shoppingItemEstimatedPrice,
+                                shoppingItemStatus
+                            )
+                        )
+                    } else {
+                        var shoppingItemEdited = shoppingItemToEdit.copy(
+                            title = shoppingItemTitle,
+                            category = ItemCategory.FOOD,
+                            description = shoppingItemDescription,
+                            estimatedPrice = shoppingItemEstimatedPrice,
+                            status = shoppingItemStatus
+                        )
+                        shoppingListViewModel.editShoppingItem(shoppingItemEdited)
+                    }
+                    onDialogDismiss()
                 })
                 {
                     Text(text = "Save")
