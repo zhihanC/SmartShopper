@@ -22,6 +22,7 @@ import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import hu.ait.smartshopper.screen.ShoppingListScreen
 import hu.ait.smartshopper.screen.ShoppingListViewModel
+import hu.ait.smartshopper.screen.ShoppingSummaryScreen
 import hu.ait.smartshopper.screen.SplashScreen
 import hu.ait.smartshopper.ui.theme.SmartShopperTheme
 
@@ -60,38 +61,14 @@ fun SmartShopperNavHost(
             )
         }
         composable("shoppinglist") {
-            ShoppingListScreen()
+            ShoppingListScreen(
+                onNavigateToSummary = {
+                    navController.navigate("summaryscreen")
+                }
+            )
+        }
+        composable("summaryscreen") {
+            ShoppingSummaryScreen()
         }
     }
 }
-
-//@Composable
-//fun TodoAppNavHost(
-//    modifier: Modifier = Modifier,
-//    navController: NavHostController = rememberNavController(),
-//    startDestination: String = "todolist"
-//) {
-//    NavHost(
-//        modifier = modifier, navController = navController, startDestination = startDestination
-//    ) {
-//        composable("todolist") { TodoListScreen(
-//            onNavigateToSummary = {all, important->
-//                navController.navigate("todosummary/$all/$important")
-//            }
-//        ) }
-//        composable("todosummary/{numalltodo}/{numimportant}",
-//            arguments = listOf(
-//                navArgument("numalltodo"){type = NavType.IntType},
-//                navArgument("numimportant"){type = NavType.IntType})
-//        ) {
-//            val numalltodo = it.arguments?.getInt("numalltodo")
-//            val numimportant = it.arguments?.getInt("numimportant")
-//            if (numalltodo != null && numimportant != null) {
-//                TodoSummaryScreen(
-//                    numalltodo = numalltodo,
-//                    numimportanttodo = numimportant
-//                )
-//            }
-//        }
-//    }
-//}

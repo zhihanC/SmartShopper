@@ -65,13 +65,15 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import hu.ait.smartshopper.data.ItemCategory
 import hu.ait.smartshopper.data.ShoppingItem
+import kotlinx.coroutines.launch
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShoppingListScreen(
     modifier: Modifier = Modifier,
-    shoppingListViewModel: ShoppingListViewModel = hiltViewModel()
+    shoppingListViewModel: ShoppingListViewModel = hiltViewModel(),
+    onNavigateToSummary: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -106,6 +108,13 @@ fun ShoppingListScreen(
                     }
                 ) {
                     Icon(Icons.Filled.Add, null)
+                }
+                IconButton(onClick = {
+                    coroutineScope.launch {
+                        onNavigateToSummary()
+                    }
+                }) {
+                    Icon(Icons.Filled.Info, null)
                 }
             }
         )
@@ -187,8 +196,6 @@ private fun AddNewShoppingItemForm(
                 label = { Text(text = "Enter item here:") }
             )
 
-            // ItemCategory Spinner needs to be added here
-
             Spinner(
                 listOf(ItemCategory.FOOD, ItemCategory.HEALTH,
                     ItemCategory.CLOTHES, ItemCategory.ELECTRONICS,
@@ -233,20 +240,9 @@ private fun AddNewShoppingItemForm(
                 Text(text = "Got it!")
             }
 
-            // This is where the to-do app had the Important click box.
-//            Row(
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                Checkbox(checked = todoImportant, onCheckedChange = {
-//                    todoImportant = it
-//                })
-//                Text(text = "Important")
-//            }
             Row {
                 Button(
                     onClick = {
-                        // This is where the Shopping Item is actually created.
-                        // Currently the spinner is not implemented and I am hardcoding the item category as food everytime
                     if (shoppingItemToEdit == null) {
                         shoppingListViewModel.addToShoppingList(
                             ShoppingItem(
