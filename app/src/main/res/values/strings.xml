@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">SmartShopper</string>
+    <string name="smart_shopper_title">Smart Shopper</string>
+    <string name="no_items">No items</string>
+    <string name="please_enter_a_title">Please enter a title!</string>
+    <string name="estimated_price_cannot_be_0">Estimated price cannot be 0!</string>
+    <string name="enter_item_here">Enter item here:</string>
+    <string name="enter_description_here">Enter description here:</string>
+    <string name="enter_estimated_price_here">Enter estimated price here:</string>
+    <string name="got_it">Got it!</string>
+    <string name="title_cannot_be_empty">Title cannot be empty!</string>
+    <string name="save">Save</string>
+    <string name="shopping_list_summary">Shopping List Summary</string>
+    <string name="on_your_shopping_list_there_are_a_total_of_items_there_are">On your shopping list, there are a total of %1$s items. There are:</string>
+    <string name="food_items">%1$s food items</string>
+    <string name="health_items">%1$s health items</string>
+    <string name="clothes_items">%1$s clothes items</string>
+    <string name="electronics_items">%1$s electronics items</string>
+    <string name="cleaning_items">%1$s cleaning items</string>
+    <string name="recreation_items">%1$s recreation items</string>
+    <string name="miscellaneous_items">%1$s miscellaneous items</string>
 </resources>

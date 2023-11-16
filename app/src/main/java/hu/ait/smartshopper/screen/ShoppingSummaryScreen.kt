@@ -17,9 +17,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.multibindings.IntoMap
+import hu.ait.smartshopper.R
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
@@ -38,24 +40,28 @@ fun ShoppingSummaryScreen(
 
     Column() {
         TopAppBar(
-            title = { Text("Shopping List Summary") },
+            title = { Text(stringResource(R.string.shopping_list_summary)) },
             colors = TopAppBarDefaults.smallTopAppBarColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer)
         )
-        Column(modifier = modifier.fillMaxSize()
+        Column(modifier = modifier
+            .fillMaxSize()
             .padding(start = 40.dp, end = 40.dp), verticalArrangement = Arrangement.SpaceEvenly){
 
             var totalItems = numFoodItems + numHealthItems + numClothesItems +
                     numElectronicsItems + numCleaningItems + numRecreationItems + numMiscItems
 
-            Text(text = "On your shopping list, there are a total of ${totalItems} items. There are:")
-            Text(text= "${numFoodItems} food items")
-            Text(text= "${numHealthItems} health items")
-            Text(text= "${numClothesItems} clothes items")
-            Text(text= "${numElectronicsItems} electronics items")
-            Text(text= "${numCleaningItems} cleaning items")
-            Text(text= "${numRecreationItems} recreation items")
-            Text(text= "${numMiscItems} miscellaneous items")
+            Text(text = stringResource(
+                R.string.on_your_shopping_list_there_are_a_total_of_items_there_are,
+                totalItems
+            ))
+            Text(text= stringResource(R.string.food_items, numFoodItems))
+            Text(text= stringResource(R.string.health_items, numHealthItems))
+            Text(text= stringResource(R.string.clothes_items, numClothesItems))
+            Text(text= stringResource(R.string.electronics_items, numElectronicsItems))
+            Text(text= stringResource(R.string.cleaning_items, numCleaningItems))
+            Text(text= stringResource(R.string.recreation_items, numRecreationItems))
+            Text(text= stringResource(R.string.miscellaneous_items, numMiscItems))
         }
     }
 }

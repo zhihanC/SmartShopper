@@ -56,7 +56,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
@@ -64,6 +66,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import hu.ait.smartshopper.R
 import hu.ait.smartshopper.data.ItemCategory
 import hu.ait.smartshopper.data.ShoppingItem
 import kotlinx.coroutines.launch
@@ -91,7 +94,7 @@ fun ShoppingListScreen(
 
     Column() {
         TopAppBar(
-            title = { Text("Smart Shopper") },
+            title = { Text(stringResource(R.string.smart_shopper_title)) },
             colors = TopAppBarDefaults.smallTopAppBarColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer),
             actions = {
@@ -143,7 +146,7 @@ fun ShoppingListScreen(
             }
 
             if (shoppingList.isEmpty())
-                Text(text = "No items")
+                Text(text = stringResource(R.string.no_items))
             else {
                 LazyColumn(modifier = Modifier.fillMaxHeight()) {
                     items(shoppingList) {
@@ -172,6 +175,8 @@ private fun AddNewShoppingItemForm(
     onDialogDismiss: () -> Unit = {},
     shoppingItemToEdit: ShoppingItem? = null
 ) {
+    var context = LocalContext.current
+    
     Dialog(
         onDismissRequest = onDialogDismiss
     ) {
@@ -205,7 +210,7 @@ private fun AddNewShoppingItemForm(
 
         fun validateTitle(text: String) {
             val isBlank = text.isBlank()
-            titleErrorText = "Please enter a title!"
+            titleErrorText = context.getString(R.string.please_enter_a_title)
             titleInputErrorState = isBlank
         }
 
@@ -219,7 +224,7 @@ private fun AddNewShoppingItemForm(
 
         fun validateAmount(text: String) {
             val allDigit = text.all{char -> char.isDigit()}
-            amountErrorText = "Estimated price cannot be 0!"
+            amountErrorText = context.getString(R.string.estimated_price_cannot_be_0)
             if (text == "0") {
                 amountInputErrorState = true
             }
@@ -242,7 +247,7 @@ private fun AddNewShoppingItemForm(
                     shoppingItemTitle = it
                     validateTitle(shoppingItemTitle)
                 },
-                label = { Text(text = "Enter item here:") },
+                label = { Text(text = stringResource(R.string.enter_item_here)) },
                 singleLine = true,
                 supportingText = {
                     if (titleInputErrorState)
@@ -283,7 +288,7 @@ private fun AddNewShoppingItemForm(
                 onValueChange = {
                     shoppingItemDescription = it
                 },
-                label = { Text(text = "Enter description here:") },
+                label = { Text(text = stringResource(R.string.enter_description_here)) },
             )
 
             OutlinedTextField(
@@ -297,7 +302,7 @@ private fun AddNewShoppingItemForm(
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 ),
-                label = { Text(text = "Enter estimated price here:") },
+                label = { Text(text = stringResource(R.string.enter_estimated_price_here)) },
                 singleLine = true,
                 supportingText = {
                     if (amountInputErrorState)
@@ -324,17 +329,17 @@ private fun AddNewShoppingItemForm(
                 Checkbox(checked = shoppingItemStatus, onCheckedChange = {
                     shoppingItemStatus = it
                 })
-                Text(text = "Got it!")
+                Text(text = stringResource(R.string.got_it))
             }
 
             Row {
                 Button(
                     onClick = {
                         if (shoppingItemTitle.isEmpty()) {
-                            titleErrorText = "Title cannot be empty!"
+                            titleErrorText = context.getString(R.string.title_cannot_be_empty)
                             titleInputErrorState = true
                         } else if (shoppingItemEstimatedPrice.toString() == "0") {
-                            amountErrorText = "Estimated price cannot be 0!"
+                            amountErrorText = context.getString(R.string.estimated_price_cannot_be_0)
                             amountInputErrorState = true
                         } else {
                             if (shoppingItemToEdit == null) {
@@ -362,7 +367,7 @@ private fun AddNewShoppingItemForm(
                         }
                     })
                 {
-                    Text(text = "Save")
+                    Text(text = stringResource(R.string.save))
                 }
             }
         }
@@ -522,7 +527,7 @@ fun Spinner(
                                     .fillMaxWidth()
                                     .align(Alignment.Start)
                             )
-                        },
+                        }
                     )
                 }
             }
