@@ -325,19 +325,18 @@ fun ShoppingItemCard(
                 )
 
                 if (shoppingItem.status) {
-                    Text(shoppingItem.title, modifier = Modifier.fillMaxWidth(0.2f),
+                    Text(shoppingItem.title, modifier = Modifier.fillMaxWidth(0.35f),
                         textDecoration = TextDecoration.LineThrough)
                 } else {
-                    Text(shoppingItem.title, modifier = Modifier.fillMaxWidth(0.2f))
+                    Text(shoppingItem.title, modifier = Modifier.fillMaxWidth(0.35f))
                 }
 
-
-                Spacer(modifier = Modifier.fillMaxSize(0.35f))
+                Spacer(modifier = Modifier.fillMaxSize(0.25f))
                 Checkbox(
                     checked = shoppingItem.status,
                     onCheckedChange = { onShoppingItemCheckChange(it) }
                 )
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(5.dp))
                 Icon(
                     imageVector = Icons.Filled.Delete,
                     contentDescription = "Delete",
@@ -346,6 +345,7 @@ fun ShoppingItemCard(
                     },
                     tint = Color.Red
                 )
+                Spacer(modifier = Modifier.width(5.dp))
                 Icon(
                     imageVector = Icons.Filled.Build,
                     contentDescription = "Edit",
@@ -354,6 +354,7 @@ fun ShoppingItemCard(
                     },
                     tint = Color.Blue
                 )
+                Spacer(modifier = Modifier.width(5.dp))
                 IconButton(onClick = { expanded = !expanded }) {
                     Icon(
                         imageVector = if (expanded)
