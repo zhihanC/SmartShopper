@@ -58,6 +58,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -317,13 +318,20 @@ fun ShoppingItemCard(
             ) {
                 Image(
                     painter = painterResource(id = shoppingItem.category.getIcon()),
-                    contentDescription = "Priority",
+                    contentDescription = "ItemCategory",
                     modifier = Modifier
                         .size(40.dp)
                         .padding(end = 10.dp)
                 )
 
-                Text(shoppingItem.title, modifier = Modifier.fillMaxWidth(0.2f))
+                if (shoppingItem.status) {
+                    Text(shoppingItem.title, modifier = Modifier.fillMaxWidth(0.2f),
+                        textDecoration = TextDecoration.LineThrough)
+                } else {
+                    Text(shoppingItem.title, modifier = Modifier.fillMaxWidth(0.2f))
+                }
+
+
                 Spacer(modifier = Modifier.fillMaxSize(0.35f))
                 Checkbox(
                     checked = shoppingItem.status,
