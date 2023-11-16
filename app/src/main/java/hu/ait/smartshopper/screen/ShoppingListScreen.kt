@@ -6,6 +6,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,14 +28,18 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -43,6 +48,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -147,7 +153,7 @@ private fun AddNewShoppingItemForm(
         }
 
         var shoppingItemCategory by rememberSaveable {
-            mutableStateOf(shoppingItemToEdit?.category)
+            mutableStateOf(shoppingItemToEdit?.category?: ItemCategory.FOOD)
         }
 
         var shoppingItemDescription by rememberSaveable {
@@ -181,6 +187,20 @@ private fun AddNewShoppingItemForm(
             )
 
             // ItemCategory Spinner needs to be added here
+
+            Spinner(
+                listOf(ItemCategory.FOOD, ItemCategory.HEALTH,
+                    ItemCategory.CLOTHES, ItemCategory.ELECTRONICS,
+                    ItemCategory.CLEANING, ItemCategory.RECREATION,
+                    ItemCategory.MISC),
+                preselected = shoppingItemCategory,
+                onSelectionChanged = {
+                    myData -> shoppingItemCategory = myData
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp)
+            )
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
@@ -231,7 +251,7 @@ private fun AddNewShoppingItemForm(
                             ShoppingItem(
                                 0,
                                 shoppingItemTitle,
-                                ItemCategory.FOOD,
+                                shoppingItemCategory,
                                 shoppingItemDescription,
                                 shoppingItemEstimatedPrice,
                                 shoppingItemStatus
@@ -240,7 +260,7 @@ private fun AddNewShoppingItemForm(
                     } else {
                         var shoppingItemEdited = shoppingItemToEdit.copy(
                             title = shoppingItemTitle,
-                            category = ItemCategory.FOOD,
+                            category = shoppingItemCategory,
                             description = shoppingItemDescription,
                             estimatedPrice = shoppingItemEstimatedPrice,
                             status = shoppingItemStatus
@@ -352,6 +372,59 @@ fun ShoppingItemCard(
                         fontSize = 12.sp,
                     )
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun Spinner(
+    list: List<ItemCategory>,
+    preselected: ItemCategory,
+    onSelectionChanged: (myData: ItemCategory) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var selected by remember { mutableStateOf(preselected) }
+    var expanded by remember { mutableStateOf(false) } // initial value
+    OutlinedCard(
+        modifier = modifier.clickable {
+            expanded = !expanded
+        }
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Top,
+        ) {
+            Text(
+                text = selected.toString(),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            )
+            Icon(Icons.Outlined.ArrowDropDown, null, modifier =
+            Modifier.padding(8.dp))
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                list.forEach { listEntry ->
+                    DropdownMenuItem(
+                        onClick = {
+                            selected = listEntry
+                            expanded = false
+                            onSelectionChanged(selected)
+                        },
+                        text = {
+                            Text(
+                                text = listEntry.toString(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .align(Alignment.Start)
+                            )
+                        },
+                    )
+                }
             }
         }
     }
