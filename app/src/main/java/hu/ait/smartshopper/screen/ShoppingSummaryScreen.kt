@@ -55,7 +55,7 @@ fun ShoppingSummaryScreen(
             Text(text= "${numElectronicsItems} electronics items")
             Text(text= "${numCleaningItems} cleaning items")
             Text(text= "${numRecreationItems} recreation items")
-            Text(text= "${numMiscItems} misc items")
+            Text(text= "${numMiscItems} miscellaneous items")
         }
     }
 }

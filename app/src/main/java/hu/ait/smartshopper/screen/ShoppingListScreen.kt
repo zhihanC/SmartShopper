@@ -330,7 +330,13 @@ private fun AddNewShoppingItemForm(
             Row {
                 Button(
                     onClick = {
-                        if (!titleInputErrorState && !amountInputErrorState) {
+                        if (shoppingItemTitle.isEmpty()) {
+                            titleErrorText = "Title cannot be empty!"
+                            titleInputErrorState = true
+                        } else if (shoppingItemEstimatedPrice.toString() == "0") {
+                            amountErrorText = "Estimated price cannot be 0!"
+                            amountInputErrorState = true
+                        } else {
                             if (shoppingItemToEdit == null) {
                                 shoppingListViewModel.addToShoppingList(
                                     ShoppingItem(
@@ -351,10 +357,10 @@ private fun AddNewShoppingItemForm(
                                     status = shoppingItemStatus
                                 )
                                 shoppingListViewModel.editShoppingItem(shoppingItemEdited)
+                            }
+                            onDialogDismiss()
                         }
-                    }
-                    onDialogDismiss()
-                })
+                    })
                 {
                     Text(text = "Save")
                 }
@@ -410,13 +416,13 @@ fun ShoppingItemCard(
                 )
 
                 if (shoppingItem.status) {
-                    Text(shoppingItem.title, modifier = Modifier.fillMaxWidth(0.35f),
+                    Text(shoppingItem.title, modifier = Modifier.fillMaxWidth(0.3f),
                         textDecoration = TextDecoration.LineThrough)
                 } else {
-                    Text(shoppingItem.title, modifier = Modifier.fillMaxWidth(0.35f))
+                    Text(shoppingItem.title, modifier = Modifier.fillMaxWidth(0.3f))
                 }
 
-                Spacer(modifier = Modifier.fillMaxSize(0.25f))
+                Spacer(modifier = Modifier.fillMaxSize(0.2f))
                 Checkbox(
                     checked = shoppingItem.status,
                     onCheckedChange = { onShoppingItemCheckChange(it) }
