@@ -48,4 +48,33 @@ class ShoppingListViewModel @Inject constructor(
             shoppingDAO.deleteAllShoppingItems()
         }
     }
+
+    suspend fun getFoodItems(): Int {
+        return shoppingDAO.getFoodItems()
+    }
+
+    suspend fun getHealthItems(): Int {
+        return shoppingDAO.getHealthItems()
+    }
+
+    suspend fun getClothesItems(): Int {
+        return shoppingDAO.getClothesItems()
+    }
+
+    suspend fun getElectronicsItems(): Int {
+        return shoppingDAO.getElectronicsItems()
+    }
+
+    suspend fun getCleaningItems(): Int {
+        return shoppingDAO.getCleaningItems()
+    }
+
+
+    suspend fun getRecreationItems(): Int {
+        return shoppingDAO.getRecreationItems()
+    }
+
+    suspend fun getMiscItems(): Int {
+        return shoppingDAO.getMiscItems()
+    }
 }

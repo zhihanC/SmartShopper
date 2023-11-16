@@ -19,6 +19,27 @@ interface ShoppingDAO {
 //    @Query("SELECT COUNT(*) from shoppingtable")
 //    suspend fun getShoppingItemsNum(): Int
 
+    @Query("""SELECT COUNT(*) from shoppingtable WHERE category="FOOD"""")
+    suspend fun getFoodItems(): Int
+
+    @Query("""SELECT COUNT(*) from shoppingtable WHERE category="HEALTH"""")
+    suspend fun getHealthItems(): Int
+
+    @Query("""SELECT COUNT(*) from shoppingtable WHERE category="CLOTHES"""")
+    suspend fun getClothesItems(): Int
+
+    @Query("""SELECT COUNT(*) from shoppingtable WHERE category="ELECTRONICS"""")
+    suspend fun getElectronicsItems(): Int
+
+    @Query("""SELECT COUNT(*) from shoppingtable WHERE category="CLEANING"""")
+    suspend fun getCleaningItems(): Int
+
+    @Query("""SELECT COUNT(*) from shoppingtable WHERE category="RECREATION"""")
+    suspend fun getRecreationItems(): Int
+
+    @Query("""SELECT COUNT(*) from shoppingtable WHERE category="MISC"""")
+    suspend fun getMiscItems(): Int
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(todo: ShoppingItem)
 

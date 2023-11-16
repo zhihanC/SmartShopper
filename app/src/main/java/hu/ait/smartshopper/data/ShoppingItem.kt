@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import hu.ait.smartshopper.R
+import java.io.Serializable
 
 @Entity(tableName = "shoppingtable")
 data class ShoppingItem(
@@ -13,7 +14,7 @@ data class ShoppingItem(
     @ColumnInfo(name = "description") var description: String,
     @ColumnInfo(name = "estimatedprice") var estimatedPrice: Int,
     @ColumnInfo(name = "status") var status: Boolean
-)
+): Serializable
 
 enum class ItemCategory {
     FOOD, HEALTH, CLOTHES, ELECTRONICS, CLEANING, RECREATION, MISC;

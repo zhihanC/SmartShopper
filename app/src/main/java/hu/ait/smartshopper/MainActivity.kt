@@ -63,12 +63,44 @@ fun SmartShopperNavHost(
         composable("shoppinglist") {
             ShoppingListScreen(
                 onNavigateToSummary = {
-                    navController.navigate("summaryscreen")
+                        food, health, clothes, electronics, cleaning, recreation, misc ->
+                    navController.navigate(
+                        "summaryscreen/$food/$health/$clothes/$electronics/$cleaning/$recreation/$misc"
+                    )
                 }
             )
         }
-        composable("summaryscreen") {
-            ShoppingSummaryScreen()
+        composable(
+            "summaryscreen/{numFoodItems}/{numHealthItems}/{numClothesItems}/{numElectronicsItems}/{numCleaningItems}/{numRecreationItems}/{numMiscItems}",
+            arguments = listOf(
+                navArgument("numFoodItems"){type = NavType.IntType},
+                navArgument("numHealthItems"){type = NavType.IntType},
+                navArgument("numClothesItems"){type = NavType.IntType},
+                navArgument("numElectronicsItems"){type = NavType.IntType},
+                navArgument("numCleaningItems"){type = NavType.IntType},
+                navArgument("numRecreationItems"){type = NavType.IntType},
+                navArgument("numMiscItems"){type = NavType.IntType}
+            )
+        ) {
+            val numFoodItems = it.arguments?.getInt("numFoodItems")
+            val numHealthItems = it.arguments?.getInt("numHealthItems")
+            val numClothesItems = it.arguments?.getInt("numClothesItems")
+            val numElectronicsItems = it.arguments?.getInt("numElectronicsItems")
+            val numCleaningItems = it.arguments?.getInt("numCleaningItems")
+            val numRecreationItems = it.arguments?.getInt("numRecreationItems")
+            val numMiscItems = it.arguments?.getInt("numMiscItems")
+            if (numFoodItems != null && numHealthItems != null && numClothesItems != null && numElectronicsItems != null
+                && numCleaningItems != null && numRecreationItems != null && numMiscItems != null) {
+                ShoppingSummaryScreen(
+                    numFoodItems = numFoodItems,
+                    numHealthItems = numHealthItems,
+                    numClothesItems = numClothesItems,
+                    numElectronicsItems = numElectronicsItems,
+                    numCleaningItems = numCleaningItems,
+                    numRecreationItems = numRecreationItems,
+                    numMiscItems = numMiscItems
+                )
+            }
         }
     }
 }

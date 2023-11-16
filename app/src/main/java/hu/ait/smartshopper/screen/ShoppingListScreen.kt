@@ -73,7 +73,7 @@ import java.util.Date
 fun ShoppingListScreen(
     modifier: Modifier = Modifier,
     shoppingListViewModel: ShoppingListViewModel = hiltViewModel(),
-    onNavigateToSummary: () -> Unit
+    onNavigateToSummary: (Int, Int, Int, Int, Int, Int ,Int) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -111,7 +111,22 @@ fun ShoppingListScreen(
                 }
                 IconButton(onClick = {
                     coroutineScope.launch {
-                        onNavigateToSummary()
+                        val foodItemsNum = shoppingListViewModel.getFoodItems()
+                        val healthItemsNum = shoppingListViewModel.getHealthItems()
+                        val clothesItemsNum = shoppingListViewModel.getClothesItems()
+                        val electronicsItemsNum = shoppingListViewModel.getElectronicsItems()
+                        val cleaningItemsNum = shoppingListViewModel.getCleaningItems()
+                        val recreationItemsNum = shoppingListViewModel.getRecreationItems()
+                        val miscItemsNum = shoppingListViewModel.getMiscItems()
+                        onNavigateToSummary(
+                            foodItemsNum,
+                            healthItemsNum,
+                            clothesItemsNum,
+                            electronicsItemsNum,
+                            cleaningItemsNum,
+                            recreationItemsNum,
+                            miscItemsNum
+                        )
                     }
                 }) {
                     Icon(Icons.Filled.Info, null)
@@ -147,6 +162,7 @@ fun ShoppingListScreen(
         }
     }
 }
+
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
