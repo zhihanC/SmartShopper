@@ -48,7 +48,7 @@ fun ShoppingSummaryScreen(
             var totalItems = numFoodItems + numHealthItems + numClothesItems +
                     numElectronicsItems + numCleaningItems + numRecreationItems + numMiscItems
 
-                    Text(text = "On your shopping list, there are a total of ${totalItems} items. There are:")
+            Text(text = "On your shopping list, there are a total of ${totalItems} items. There are:")
             Text(text= "${numFoodItems} food items")
             Text(text= "${numHealthItems} health items")
             Text(text= "${numClothesItems} clothes items")

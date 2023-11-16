@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -194,6 +195,36 @@ private fun AddNewShoppingItemForm(
             mutableStateOf(shoppingItemToEdit?.status?: false)
         }
 
+        var titleErrorText by rememberSaveable {
+            mutableStateOf("")
+        }
+
+        var titleInputErrorState by rememberSaveable {
+            mutableStateOf(false)
+        }
+
+        fun validateTitle(text: String) {
+            val isBlank = text.isBlank()
+            titleErrorText = "Please enter a title!"
+            titleInputErrorState = isBlank
+        }
+
+        var amountInputErrorState by rememberSaveable {
+            mutableStateOf(false)
+        }
+
+        var amountErrorText by rememberSaveable {
+            mutableStateOf("")
+        }
+
+        fun validateAmount(text: String) {
+            val allDigit = text.all{char -> char.isDigit()}
+            amountErrorText = "Estimated price cannot be 0!"
+            if (text == "0") {
+                amountInputErrorState = true
+            }
+        }
+
         Column(
             Modifier
                 .background(
@@ -206,10 +237,30 @@ private fun AddNewShoppingItemForm(
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = shoppingItemTitle,
+                isError = titleInputErrorState,
                 onValueChange = {
                     shoppingItemTitle = it
+                    validateTitle(shoppingItemTitle)
                 },
-                label = { Text(text = "Enter item here:") }
+                label = { Text(text = "Enter item here:") },
+                singleLine = true,
+                supportingText = {
+                    if (titleInputErrorState)
+                        Text(
+                            text = titleErrorText,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.labelSmall,
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                },
+                trailingIcon = {
+                    if (titleInputErrorState) {
+                        Icon(
+                            Icons.Filled.Warning, "error",
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
             )
 
             Spinner(
@@ -232,19 +283,39 @@ private fun AddNewShoppingItemForm(
                 onValueChange = {
                     shoppingItemDescription = it
                 },
-                label = { Text(text = "Enter description here:") }
+                label = { Text(text = "Enter description here:") },
             )
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = shoppingItemEstimatedPrice.toString(),
+                isError = amountInputErrorState,
                 onValueChange = {
                     shoppingItemEstimatedPrice = it.toIntOrNull() ?: 0
+                    validateAmount(shoppingItemEstimatedPrice.toString())
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 ),
-                label = { Text(text = "Enter estimated price here:") }
+                label = { Text(text = "Enter estimated price here:") },
+                singleLine = true,
+                supportingText = {
+                    if (amountInputErrorState)
+                        Text(
+                            text = amountErrorText,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.labelSmall,
+                            modifier = Modifier.padding(start = 16.dp)
+                        )
+                },
+                trailingIcon = {
+                    if (amountInputErrorState) {
+                        Icon(
+                            Icons.Filled.Warning, "error",
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
             )
 
             Row(
@@ -259,26 +330,28 @@ private fun AddNewShoppingItemForm(
             Row {
                 Button(
                     onClick = {
-                    if (shoppingItemToEdit == null) {
-                        shoppingListViewModel.addToShoppingList(
-                            ShoppingItem(
-                                0,
-                                shoppingItemTitle,
-                                shoppingItemCategory,
-                                shoppingItemDescription,
-                                shoppingItemEstimatedPrice,
-                                shoppingItemStatus
-                            )
-                        )
-                    } else {
-                        var shoppingItemEdited = shoppingItemToEdit.copy(
-                            title = shoppingItemTitle,
-                            category = shoppingItemCategory,
-                            description = shoppingItemDescription,
-                            estimatedPrice = shoppingItemEstimatedPrice,
-                            status = shoppingItemStatus
-                        )
-                        shoppingListViewModel.editShoppingItem(shoppingItemEdited)
+                        if (!titleInputErrorState && !amountInputErrorState) {
+                            if (shoppingItemToEdit == null) {
+                                shoppingListViewModel.addToShoppingList(
+                                    ShoppingItem(
+                                        0,
+                                        shoppingItemTitle,
+                                        shoppingItemCategory,
+                                        shoppingItemDescription,
+                                        shoppingItemEstimatedPrice,
+                                        shoppingItemStatus
+                                    )
+                                )
+                            } else {
+                                var shoppingItemEdited = shoppingItemToEdit.copy(
+                                    title = shoppingItemTitle,
+                                    category = shoppingItemCategory,
+                                    description = shoppingItemDescription,
+                                    estimatedPrice = shoppingItemEstimatedPrice,
+                                    status = shoppingItemStatus
+                                )
+                                shoppingListViewModel.editShoppingItem(shoppingItemEdited)
+                        }
                     }
                     onDialogDismiss()
                 })
@@ -388,7 +461,7 @@ fun ShoppingItemCard(
                     )
                 )
                 Text(
-                    text = shoppingItem.estimatedPrice.toString(),
+                    text = "$ " + shoppingItem.estimatedPrice.toString(),
                     style = TextStyle(
                         fontSize = 12.sp,
                     )
