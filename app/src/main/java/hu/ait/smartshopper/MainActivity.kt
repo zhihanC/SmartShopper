@@ -22,6 +22,7 @@ import androidx.navigation.navArgument
 import dagger.hilt.android.AndroidEntryPoint
 import hu.ait.smartshopper.screen.ShoppingListScreen
 import hu.ait.smartshopper.screen.ShoppingListViewModel
+import hu.ait.smartshopper.screen.SplashScreen
 import hu.ait.smartshopper.ui.theme.SmartShopperTheme
 
 @AndroidEntryPoint
@@ -46,11 +47,18 @@ class MainActivity : ComponentActivity() {
 fun SmartShopperNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = "shoppinglist"
+    startDestination: String = "splashscreen"
 ) {
     NavHost(
         modifier = modifier, navController = navController, startDestination = startDestination
     ) {
+        composable("splashscreen") {
+            SplashScreen(
+                onNavigateToMain = {
+                    navController.navigate("shoppinglist")
+                }
+            )
+        }
         composable("shoppinglist") {
             ShoppingListScreen()
         }
